@@ -13,8 +13,13 @@ white = (255, 255, 255)
 dark_grey = (43, 45, 48)
 darker_grey = (23, 25, 28)
 light_grey = (52, 55, 58)
+
 button_text = "Play"
 button_rect = pygame.Rect(300, 250, 200, 100)
+
+quit_button_text = "Quit"
+quit_button_rect = pygame.Rect(300, 250, 200, 100)
+
 font = pygame.font.Font(None, 36)
 
 """
@@ -34,20 +39,31 @@ while is_running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Prüfen, ob die Mausklickposition innerhalb des Buttons liegt
             if button_rect.collidepoint(event.pos):
-                print(button_rect.height)
+                print("Play")
+            if quit_button_rect.collidepoint(event.pos):
+                pygame.quit()
+                sys.exit()
 
     window.fill(dark_grey)
 
     pygame.draw.rect(window, darker_grey, button_rect)
+    pygame.draw.rect(window, darker_grey, quit_button_rect)
 
     button_surface = font.render(button_text, True, white)
+    quit_button_surface = font.render(quit_button_text, True, white)
+
     text_rect = button_surface.get_rect()
     text_rect.center = button_rect.center
 
+    quit_text_rect = quit_button_surface.get_rect()
+    quit_text_rect.center = quit_button_rect.center
+
     window.fill(dark_grey)
     pygame.draw.rect(window, darker_grey, button_rect)
+    pygame.draw.rect(window, darker_grey, quit_button_rect)
 
     button_rect.center = (window_width // 2, window_height // 2 - 100)
+    quit_button_rect.center = (window_width // 2, window_height // 2 + 100)
 
     mouse = pygame.mouse.get_pos()
 
@@ -56,11 +72,17 @@ while is_running:
     if (window_width/2-button_rect.width/2 <= mouse[0] <= window_width/2+button_rect.width/2 and
             window_height/2-button_rect.height/2-100 <= mouse[1] <= window_height/2+button_rect.height/2-100):
         pygame.draw.rect(window, light_grey, button_rect)
-
     else:
         pygame.draw.rect(window, darker_grey, button_rect)
 
+    if (window_width/2-quit_button_rect.width/2 <= mouse[0] <= window_width/2+quit_button_rect.width/2 and
+            window_height/2-quit_button_rect.height/2+100 <= mouse[1] <= window_height/2+quit_button_rect.height/2+100):
+        pygame.draw.rect(window, light_grey, quit_button_rect)
+    else:
+        pygame.draw.rect(window, darker_grey, quit_button_rect)
+
     window.blit(button_surface, text_rect)
+    window.blit(quit_button_surface, quit_text_rect)
 
     pygame.display.flip()
 
