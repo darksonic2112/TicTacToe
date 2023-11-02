@@ -3,10 +3,11 @@ import sys
 
 pygame.init()
 
+game_state = "Menu"
+
 window_width = 600
 window_height = 600
 window = pygame.display.set_mode((window_width, window_height))
-
 pygame.display.set_caption("Tic Tac Toe")
 
 white = (255, 255, 255)
@@ -20,15 +21,78 @@ button_rect = pygame.Rect(300, 250, 200, 100)
 quit_button_text = "Quit"
 quit_button_rect = pygame.Rect(300, 250, 200, 100)
 
+field_height = 48
+field_width = 48
+
 font = pygame.font.Font(None, 36)
 
-"""
-# Bild laden
-image = pygame.image.load("dein_bild.jpg")  # Ersetze "dein_bild.jpg" durch den Dateinamen deines Bildes
+global show_circle_1, show_cross_1
+show_circle_1 = False
+show_cross_1 = False
 
-# Bild auf die Fenstergröße skalieren
-image = pygame.transform.scale(image, (window_width, window_height))
-"""
+global show_circle_2, show_cross_2
+show_circle_2 = False
+show_cross_2 = False
+
+global show_circle_3, show_cross_3
+show_circle_3 = False
+show_cross_3 = False
+
+global show_circle_4, show_cross_4
+show_circle_4 = False
+show_cross_4 = False
+
+global show_circle_5, show_cross_5
+show_circle_5 = False
+show_cross_5 = False
+
+global show_circle_6, show_cross_6
+show_circle_6 = False
+show_cross_6 = False
+
+global show_circle_7, show_cross_7
+show_circle_7 = False
+show_cross_7 = False
+
+global show_circle_8, show_cross_8
+show_circle_8 = False
+show_cross_8 = False
+
+global show_circle_9, show_cross_9
+show_circle_9 = False
+show_cross_9 = False
+
+
+def start_game():
+    pygame.draw.line(window, white, (100, 100), (100, 250), 5)
+    pygame.draw.line(window, white, (150, 100), (150, 250), 5)
+    pygame.draw.line(window, white, (50, 150), (200, 150), 5)
+    pygame.draw.line(window, white, (50, 200), (200, 200), 5)
+
+    mouse = pygame.mouse.get_pos()
+
+    #  Field 1
+    global show_circle_1, show_cross_1
+    field_1_rect = pygame.Rect(50, 100, 48, 48)
+    pygame.draw.rect(window, dark_grey, field_1_rect)
+    if not show_circle_1 and not show_cross_1:
+        if 50 <= mouse[0] <= 50 + field_width and 100 <= mouse[1] <= 100 + field_height:
+            pygame.draw.rect(window, light_grey, field_1_rect)
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if field_1_rect.collidepoint(event.pos):
+            show_circle_1 = True
+
+    #  Field 2
+    global show_circle_2, show_cross_2
+    field_2_rect = pygame.Rect(103, 100, 45, 48)
+    pygame.draw.rect(window, dark_grey, field_2_rect)
+    if not show_circle_2 and not show_cross_2:
+        if 103 <= mouse[0] <= 103 + 45 and 100 <= mouse[1] <= 100 + field_height:
+            pygame.draw.rect(window, light_grey, field_2_rect)
+    if event.type == pygame.MOUSEBUTTONDOWN:
+        if field_2_rect.collidepoint(event.pos):
+            show_circle_2 = True
+
 
 is_running = True
 while is_running:
@@ -37,52 +101,58 @@ while is_running:
             is_running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Prüfen, ob die Mausklickposition innerhalb des Buttons liegt
             if button_rect.collidepoint(event.pos):
-                print("Play")
+                game_state = "Game"
             if quit_button_rect.collidepoint(event.pos):
                 pygame.quit()
                 sys.exit()
 
     window.fill(dark_grey)
 
-    pygame.draw.rect(window, darker_grey, button_rect)
-    pygame.draw.rect(window, darker_grey, quit_button_rect)
+    if game_state == "Menu":
 
-    button_surface = font.render(button_text, True, white)
-    quit_button_surface = font.render(quit_button_text, True, white)
+        button_surface = font.render(button_text, True, white)
+        quit_button_surface = font.render(quit_button_text, True, white)
 
-    text_rect = button_surface.get_rect()
-    text_rect.center = button_rect.center
+        text_rect = button_surface.get_rect()
+        text_rect.center = button_rect.center
 
-    quit_text_rect = quit_button_surface.get_rect()
-    quit_text_rect.center = quit_button_rect.center
+        quit_text_rect = quit_button_surface.get_rect()
+        quit_text_rect.center = quit_button_rect.center
 
-    window.fill(dark_grey)
-    pygame.draw.rect(window, darker_grey, button_rect)
-    pygame.draw.rect(window, darker_grey, quit_button_rect)
-
-    button_rect.center = (window_width // 2, window_height // 2 - 100)
-    quit_button_rect.center = (window_width // 2, window_height // 2 + 100)
-
-    mouse = pygame.mouse.get_pos()
-
-    # if mouse is hovered on a button it changes to lighter shade
-    # -100 is the offset from the button to window center
-    if (window_width/2-button_rect.width/2 <= mouse[0] <= window_width/2+button_rect.width/2 and
-            window_height/2-button_rect.height/2-100 <= mouse[1] <= window_height/2+button_rect.height/2-100):
-        pygame.draw.rect(window, light_grey, button_rect)
-    else:
+        window.fill(dark_grey)
         pygame.draw.rect(window, darker_grey, button_rect)
-
-    if (window_width/2-quit_button_rect.width/2 <= mouse[0] <= window_width/2+quit_button_rect.width/2 and
-            window_height/2-quit_button_rect.height/2+100 <= mouse[1] <= window_height/2+quit_button_rect.height/2+100):
-        pygame.draw.rect(window, light_grey, quit_button_rect)
-    else:
         pygame.draw.rect(window, darker_grey, quit_button_rect)
 
-    window.blit(button_surface, text_rect)
-    window.blit(quit_button_surface, quit_text_rect)
+        button_rect.center = (window_width // 2, window_height // 2 - 100)
+        quit_button_rect.center = (window_width // 2, window_height // 2 + 100)
+
+        mouse = pygame.mouse.get_pos()
+
+        # if mouse is hovered on a button it changes to lighter shade
+        # -100 is the offset from the button to window center
+        if (window_width/2-button_rect.width/2 <= mouse[0] <= window_width/2+button_rect.width/2 and
+                window_height/2-button_rect.height/2-100 <= mouse[1] <= window_height/2+button_rect.height/2-100):
+            pygame.draw.rect(window, light_grey, button_rect)
+        else:
+            pygame.draw.rect(window, darker_grey, button_rect)
+
+        if (window_width/2-quit_button_rect.width/2 <= mouse[0] <= window_width/2+quit_button_rect.width/2 and
+                window_height/2-quit_button_rect.height/2+100 <= mouse[1] <= window_height/2+quit_button_rect.height/2+100):
+            pygame.draw.rect(window, light_grey, quit_button_rect)
+        else:
+            pygame.draw.rect(window, darker_grey, quit_button_rect)
+
+        window.blit(button_surface, text_rect)
+        window.blit(quit_button_surface, quit_text_rect)
+
+    elif game_state == "Game":
+        start_game()
+
+        if show_circle_1:
+            pygame.draw.circle(window, white, (75, 125), 20, 5)
+        if show_circle_2:
+            pygame.draw.circle(window, white, (125, 125), 20, 5)
 
     pygame.display.flip()
 
