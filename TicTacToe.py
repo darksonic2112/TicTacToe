@@ -65,7 +65,11 @@ global show_circle_9, show_cross_9
 show_circle_9 = False
 show_cross_9 = False
 
-board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+board = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+]
 
 
 def change_player(state):
@@ -76,6 +80,35 @@ def change_player(state):
 
 
 player_turn = "Circle"
+
+
+def check_for_winner():
+    #  Check Rows
+    for row in board:
+        if all(cell == row[0] for cell in row) and row[0] == 1:
+            print("Cross won")
+        if all(cell == row[0] for cell in row) and row[0] == 2:
+            print("Circle won")
+
+    #  Check columns
+    for col in range(3):
+        if all(row[col] == board[0][col] for row in board) and board[0][col] == 1:
+            print("Cross won")
+        if all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
+            print("Circle won")
+
+    #  Check diagonals
+    if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 1:
+        print("Cross won")
+    if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
+        print("Circle won")
+
+    if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
+        return True
+    if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
+        return True
+
+    return False
 
 
 def start_game():
@@ -101,11 +134,12 @@ def start_game():
                 show_circle_1 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[0][0] = 2
             elif player_turn == "Cross":
                 show_cross_1 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[0][0] = 1
+                board[0][0] = 1
 
 
     #  Field 2
@@ -121,11 +155,12 @@ def start_game():
                 show_circle_2 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[0][1] = 2
             elif player_turn == "Cross":
                 show_cross_2 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[0][1] = 1
+                board[0][1] = 1
 
     #  Field 3
     global show_circle_3, show_cross_3
@@ -140,11 +175,12 @@ def start_game():
                 show_circle_3 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[0][2] = 2
             elif player_turn == "Cross":
                 show_cross_3 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[0][2] = 1
+                board[0][2] = 1
 
     #  Field 4
     global show_circle_4, show_cross_4
@@ -159,11 +195,12 @@ def start_game():
                 show_circle_4 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[1][0] = 2
             elif player_turn == "Cross":
                 show_cross_4 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[1][0] = 1
+                board[1][0] = 1
 
     #  Field 5
     global show_circle_5, show_cross_5
@@ -178,11 +215,12 @@ def start_game():
                 show_circle_5 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[1][1] = 2
             elif player_turn == "Cross":
                 show_cross_5 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[1][1] = 1
+                board[1][1] = 1
 
     #  Field 6
     global show_circle_6, show_cross_6
@@ -197,11 +235,12 @@ def start_game():
                 show_circle_6 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[1][2] = 1
             elif player_turn == "Cross":
                 show_cross_6 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[1][2] = 1
+                board[1][2] = 1
 
     #  Field 7
     global show_circle_7, show_cross_7
@@ -216,11 +255,12 @@ def start_game():
                 show_circle_7 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[2][0] = 2
             elif player_turn == "Cross":
                 show_cross_7 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[2][0] = 1
+                board[2][0] = 1
 
     #  Field 8
     global show_circle_8, show_cross_8
@@ -235,11 +275,12 @@ def start_game():
                 show_circle_8 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[2][1] = 2
             elif player_turn == "Cross":
                 show_cross_8 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[2][1] = 1
+                board[2][1] = 1
 
     #  Field 9
     global show_circle_9, show_cross_9
@@ -254,11 +295,12 @@ def start_game():
                 show_circle_9 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
+                board[2][2] = 2
             elif player_turn == "Cross":
                 show_cross_9 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-            board[2][2] = 1
+                board[2][2] = 1
 
 is_running = True
 while is_running:
@@ -342,7 +384,6 @@ while is_running:
         if show_circle_9 and not show_cross_9:
             pygame.draw.circle(window, white, (177, 225), 20, 5)
 
-
         #  Crosses
         if show_cross_1 and not show_circle_1:
             pygame.draw.line(window, white, (54, 103), (94, 143), 7)
@@ -371,6 +412,8 @@ while is_running:
         if show_cross_9 and not show_circle_9:
             pygame.draw.line(window, white, (156, 208), (196, 248), 7)
             pygame.draw.line(window, white, (195, 208), (156, 248), 7)
+
+        check_for_winner()
 
     pygame.display.flip()
 
