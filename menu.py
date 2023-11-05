@@ -25,6 +25,7 @@ field_height = 48
 field_width = 48
 
 font = pygame.font.Font(None, 36)
+text_surface = font.render('\'s turn', False, white)
 
 move_delay = 5  # Possible works without, but just in case
 
@@ -83,6 +84,7 @@ def start_game():
     pygame.draw.line(window, white, (150, 100), (150, 250), 5)
     pygame.draw.line(window, white, (50, 150), (200, 150), 5)
     pygame.draw.line(window, white, (50, 200), (200, 200), 5)
+    window.blit(text_surface, (window_width/2, 15))
 
     mouse = pygame.mouse.get_pos()
 
@@ -312,6 +314,13 @@ while is_running:
 
     elif game_state == "Game":
         start_game()
+
+        #  Player's turn
+        if player_turn == "Cross":
+            pygame.draw.line(window, white, (250, 10), (290, 50), 7)
+            pygame.draw.line(window, white, (290, 10), (250, 50), 7)
+        if player_turn == "Circle":
+            pygame.draw.circle(window, white, (window_width / 2 - 30, 30), 20, 5)
 
         #  Circles
         if show_circle_1 and not show_cross_1:
