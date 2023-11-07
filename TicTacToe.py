@@ -21,6 +21,9 @@ button_rect = pygame.Rect(300, 250, 200, 100)
 quit_button_text = "Quit"
 quit_button_rect = pygame.Rect(300, 250, 200, 100)
 
+reset_button_text = "Reset"
+reset_button_rect = pygame.Rect(300, 250, 200, 100)
+
 field_height = 48
 field_width = 48
 
@@ -29,6 +32,7 @@ text_surface = font.render('\'s turn', False, white)
 winner_text = font.render('is the winner', False, white)
 
 move_delay = 5  # Possible works without, but just in case
+win_delay = 500
 
 global show_circle_1, show_cross_1
 show_circle_1 = False
@@ -101,6 +105,7 @@ def check_for_winner():
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
             pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
         if all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
@@ -110,6 +115,7 @@ def check_for_winner():
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
     if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
@@ -118,11 +124,40 @@ def check_for_winner():
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
     if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
 
     return False
+
+
+def reset_game():
+    global show_circle_1, show_cross_1, show_circle_2, show_cross_2, show_circle_3, show_cross_3, \
+        show_circle_4, show_cross_4, show_circle_5, show_cross_5, show_circle_6, show_cross_6, show_circle_7, \
+        show_cross_7, show_circle_8, show_cross_8, show_circle_9, show_cross_9, player_turn
+    show_circle_1 = False
+    show_cross_1 = False
+    show_circle_2 = False
+    show_cross_2 = False
+    show_circle_3 = False
+    show_cross_3 = False
+    show_circle_4 = False
+    show_cross_4 = False
+    show_circle_5 = False
+    show_cross_5 = False
+    show_circle_6 = False
+    show_cross_6 = False
+    show_circle_7 = False
+    show_cross_7 = False
+    show_circle_8 = False
+    show_cross_8 = False
+    show_circle_9 = False
+    show_cross_9 = False
+    player_turn = "Circle"
+    for i in range(3):
+        for j in range(3):
+            board[i][j] = 0
 
 
 def start_game():
@@ -131,10 +166,8 @@ def start_game():
     pygame.draw.line(window, white, (150, 100), (150, 250), 5)
     pygame.draw.line(window, white, (50, 150), (200, 150), 5)
     pygame.draw.line(window, white, (50, 200), (200, 200), 5)
-    window.blit(text_surface, (window_width/2, 15))
 
     mouse = pygame.mouse.get_pos()
-
     #  Field 1
     global show_circle_1, show_cross_1
     field_1_rect = pygame.Rect(50, 100, 48, 48)
@@ -328,6 +361,9 @@ while is_running:
             if quit_button_rect.collidepoint(event.pos):
                 pygame.quit()
                 sys.exit()
+            if reset_button_rect.collidepoint(event.pos):
+                pygame.time.delay(win_delay)
+                reset_game()
 
     window.fill(dark_grey)
 
@@ -370,6 +406,24 @@ while is_running:
 
     elif game_state == "Game":
         start_game()
+
+        window.blit(text_surface, (window_width / 2, 15))
+        reset_button_surface = font.render(reset_button_text, True, white)
+        reset_text_rect = reset_button_surface.get_rect()
+        reset_text_rect.center = reset_button_rect.center
+        pygame.draw.rect(window, darker_grey, reset_button_rect)
+        reset_button_rect.center = (window_width // 2 + 100, window_height // 2 + 100)
+        window.blit(reset_button_surface, reset_text_rect)
+        mouse = pygame.mouse.get_pos()
+        if (window_width / 2 + 100 - reset_button_rect.width / 2 <= mouse[
+            0] <= window_width / 2 + 100 + reset_button_rect.width / 2 and
+                window_height / 2 + 50 - reset_button_rect.height / 2 + 50 <= mouse[
+                    1] <= window_height / 2 + 50 + reset_button_rect.height / 2 + 50):
+            pygame.draw.rect(window, light_grey, reset_button_rect)
+        else:
+            pygame.draw.rect(window, darker_grey, reset_button_rect)
+
+        window.blit(reset_button_surface, reset_text_rect)
 
         #  Player's turn
         if player_turn == "Cross":
