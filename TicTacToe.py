@@ -27,9 +27,10 @@ field_width = 48
 font = pygame.font.Font(None, 36)
 text_surface = font.render('\'s turn', False, white)
 winner_text = font.render('is the winner', False, white)
+draw_text = font.render('Game is a draw', False, white)
 
 move_delay = 5  # Possible works without, but just in case
-win_delay = 100
+win_delay = 1000
 
 global show_circle_1, show_cross_1
 show_circle_1 = False
@@ -67,6 +68,9 @@ global show_circle_9, show_cross_9
 show_circle_9 = False
 show_cross_9 = False
 
+global turn_counter
+turn_counter = 0
+
 board = [
     [0, 0, 0],
     [0, 0, 0],
@@ -84,6 +88,53 @@ def change_player(state):
 player_turn = "Circle"
 
 
+def reset_game():
+    pygame.display.flip()
+    pygame.time.delay(win_delay)
+    global show_circle_1, show_cross_1
+    show_circle_1 = False
+    show_cross_1 = False
+
+    global show_circle_2, show_cross_2
+    show_circle_2 = False
+    show_cross_2 = False
+
+    global show_circle_3, show_cross_3
+    show_circle_3 = False
+    show_cross_3 = False
+
+    global show_circle_4, show_cross_4
+    show_circle_4 = False
+    show_cross_4 = False
+
+    global show_circle_5, show_cross_5
+    show_circle_5 = False
+    show_cross_5 = False
+
+    global show_circle_6, show_cross_6
+    show_circle_6 = False
+    show_cross_6 = False
+
+    global show_circle_7, show_cross_7
+    show_circle_7 = False
+    show_cross_7 = False
+
+    global show_circle_8, show_cross_8
+    show_circle_8 = False
+    show_cross_8 = False
+
+    global show_circle_9, show_cross_9
+    show_circle_9 = False
+    show_cross_9 = False
+
+    for i in range(3):
+        for j in range(3):
+            board[i][j] = 0
+
+    global turn_counter
+    turn_counter = 0
+
+
 def check_for_winner():
     #  Check Rows
     for row in board:
@@ -91,10 +142,13 @@ def check_for_winner():
             window.blit(winner_text, (window_width/2, window_height/4))
             pygame.draw.line(window, white, (250, window_height/4-10), (290, window_height/4+30), 7)
             pygame.draw.line(window, white, (290, window_height/4-10), (250, window_height/4+30), 7)
+            reset_game()
+
 
         if all(cell == row[0] for cell in row) and row[0] == 2:
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
+            reset_game()
 
     #  Check columns
     for col in range(3):
@@ -102,35 +156,46 @@ def check_for_winner():
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
             pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+            reset_game()
 
         if all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
+            reset_game()
 
     #  Check diagonals
     if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 1:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+        reset_game()
 
     if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
+        reset_game()
 
     if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+        reset_game()
 
     if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
+        reset_game()
+
+    if turn_counter == 9:
+        window.blit(draw_text, (window_width / 2, window_height / 4))
+        reset_game()
 
     return False
 
 
 def start_game():
     global player_turn
+    global turn_counter
     pygame.draw.line(window, white, (100, 100), (100, 250), 5)
     pygame.draw.line(window, white, (150, 100), (150, 250), 5)
     pygame.draw.line(window, white, (50, 150), (200, 150), 5)
@@ -158,6 +223,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[0][0] = 1
+            turn_counter += 1
 
 
     #  Field 2
@@ -179,6 +245,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[0][1] = 1
+            turn_counter += 1
 
     #  Field 3
     global show_circle_3, show_cross_3
@@ -199,6 +266,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[0][2] = 1
+            turn_counter += 1
 
     #  Field 4
     global show_circle_4, show_cross_4
@@ -219,6 +287,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[1][0] = 1
+            turn_counter += 1
 
     #  Field 5
     global show_circle_5, show_cross_5
@@ -239,6 +308,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[1][1] = 1
+            turn_counter += 1
 
     #  Field 6
     global show_circle_6, show_cross_6
@@ -259,6 +329,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[1][2] = 1
+            turn_counter += 1
 
     #  Field 7
     global show_circle_7, show_cross_7
@@ -279,6 +350,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[2][0] = 1
+            turn_counter += 1
 
     #  Field 8
     global show_circle_8, show_cross_8
@@ -299,6 +371,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[2][1] = 1
+            turn_counter += 1
 
     #  Field 9
     global show_circle_9, show_cross_9
@@ -319,6 +392,7 @@ def start_game():
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
                 board[2][2] = 1
+            turn_counter += 1
 
 is_running = True
 while is_running:
