@@ -29,6 +29,7 @@ text_surface = font.render('\'s turn', False, white)
 winner_text = font.render('is the winner', False, white)
 
 move_delay = 5  # Possible works without, but just in case
+win_delay = 100
 
 global show_circle_1, show_cross_1
 show_circle_1 = False
@@ -93,7 +94,7 @@ def check_for_winner():
 
         if all(cell == row[0] for cell in row) and row[0] == 2:
             window.blit(winner_text, (window_width / 2, window_height / 4))
-            pygame.draw.circle(window, white, (window_width / 2 - 30, window_height/4 +10), 20, 5)
+            pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
 
     #  Check columns
     for col in range(3):
@@ -101,6 +102,7 @@ def check_for_winner():
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
             pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
         if all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
             window.blit(winner_text, (window_width / 2, window_height / 4))
             pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
@@ -110,6 +112,7 @@ def check_for_winner():
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
     if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
@@ -118,6 +121,7 @@ def check_for_winner():
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.line(window, white, (250, window_height / 4 - 10), (290, window_height / 4 + 30), 7)
         pygame.draw.line(window, white, (290, window_height / 4 - 10), (250, window_height / 4 + 30), 7)
+
     if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
         window.blit(winner_text, (window_width / 2, window_height / 4))
         pygame.draw.circle(window, white, (window_width / 2 - 30, window_height / 4 + 10), 20, 5)
@@ -249,7 +253,7 @@ def start_game():
                 show_circle_6 = True
                 player_turn = change_player(player_turn)
                 pygame.time.delay(move_delay)
-                board[1][2] = 1
+                board[1][2] = 2
             elif player_turn == "Cross":
                 show_cross_6 = True
                 player_turn = change_player(player_turn)
