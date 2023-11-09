@@ -21,6 +21,9 @@ button_rect = pygame.Rect(300, 250, 200, 100)
 quit_button_text = "Quit"
 quit_button_rect = pygame.Rect(300, 250, 200, 100)
 
+reset_button_text = "Reset"
+reset_button_rect = pygame.Rect(300, 250, 200, 100)
+
 field_height = 48
 field_width = 48
 
@@ -202,7 +205,23 @@ def start_game():
     pygame.draw.line(window, white, (50, 200), (200, 200), 5)
     window.blit(text_surface, (window_width/2, 15))
 
+    reset_button_surface = font.render(reset_button_text, True, white)
+    reset_text_rect = reset_button_surface.get_rect()
+    reset_text_rect.center = reset_button_rect.center
+    pygame.draw.rect(window, darker_grey, reset_button_rect)
+    reset_button_rect.center = (window_width // 2 + 150, window_height // 2 - 50)
+
     mouse = pygame.mouse.get_pos()
+
+    if (window_width / 2 + 150 - reset_button_rect.width / 2 <= mouse[0] <= window_width / 2 +
+            reset_button_rect.width / 2 + 150 and
+            window_height / 2 - reset_button_rect.height / 2 - 50 <= mouse[
+                1] <= window_height / 2 + reset_button_rect.height / 2 - 50):
+        pygame.draw.rect(window, light_grey, reset_button_rect)
+    else:
+        pygame.draw.rect(window, darker_grey, reset_button_rect)
+
+    window.blit(reset_button_surface, reset_text_rect)
 
     #  Field 1
     global show_circle_1, show_cross_1
@@ -406,6 +425,8 @@ while is_running:
             if quit_button_rect.collidepoint(event.pos):
                 pygame.quit()
                 sys.exit()
+            if reset_button_rect.collidepoint(event.pos):
+                turn_counter = 9
 
     window.fill(dark_grey)
 
