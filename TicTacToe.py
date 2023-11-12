@@ -21,7 +21,7 @@ button_rect = pygame.Rect(300, 250, 200, 100)
 quit_button_text = "Quit"
 quit_button_rect = pygame.Rect(300, 250, 200, 100)
 
-reset_button_text = "Reset"
+reset_button_text = "Reset Game"
 reset_button_rect = pygame.Rect(300, 250, 200, 100)
 
 field_height = 48
