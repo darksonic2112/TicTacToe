@@ -32,7 +32,6 @@ text_surface = font.render('\'s turn', False, white)
 winner_text = font.render('is the winner', False, white)
 draw_text = font.render('Game is a draw', False, white)
 
-move_delay = 5  # Possible works without, but just in case
 win_delay = 1000
 
 global show_circle_1, show_cross_1
@@ -235,12 +234,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_1 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][0] = 2
             elif player_turn == "Cross":
                 show_cross_1 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][0] = 1
             turn_counter += 1
 
@@ -257,12 +254,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_2 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][1] = 2
             elif player_turn == "Cross":
                 show_cross_2 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][1] = 1
             turn_counter += 1
 
@@ -278,12 +273,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_3 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][2] = 2
             elif player_turn == "Cross":
                 show_cross_3 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[0][2] = 1
             turn_counter += 1
 
@@ -299,12 +292,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_4 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][0] = 2
             elif player_turn == "Cross":
                 show_cross_4 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][0] = 1
             turn_counter += 1
 
@@ -320,12 +311,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_5 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][1] = 2
             elif player_turn == "Cross":
                 show_cross_5 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][1] = 1
             turn_counter += 1
 
@@ -341,12 +330,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_6 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][2] = 2
             elif player_turn == "Cross":
                 show_cross_6 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[1][2] = 1
             turn_counter += 1
 
@@ -362,12 +349,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_7 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][0] = 2
             elif player_turn == "Cross":
                 show_cross_7 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][0] = 1
             turn_counter += 1
 
@@ -383,12 +368,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_8 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][1] = 2
             elif player_turn == "Cross":
                 show_cross_8 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][1] = 1
             turn_counter += 1
 
@@ -404,12 +387,10 @@ def start_game():
             if player_turn == "Circle":
                 show_circle_9 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][2] = 2
             elif player_turn == "Cross":
                 show_cross_9 = True
                 player_turn = change_player(player_turn)
-                pygame.time.delay(move_delay)
                 board[2][2] = 1
             turn_counter += 1
 
