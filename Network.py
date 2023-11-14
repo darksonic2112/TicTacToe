@@ -11,12 +11,12 @@ class Network:
         self.server = SERVER
         self.port = 5555
         self.addr = (self.server, self.port)
-        self.id = self.connected()
+        self.id = self.connect()
         print(self.id)
 
-    def connected(self):
+    def connect(self):
         try:
-            self.client.connected(self.addr)
+            self.client.connect(self.addr)
             return self.client.recv(2048).decode()
         except:
             pass
