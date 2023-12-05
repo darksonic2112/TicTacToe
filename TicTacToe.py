@@ -34,43 +34,16 @@ draw_text = font.render('Game is a draw', False, white)
 
 win_delay = 1000
 
-global show_circle_1, show_cross_1
-show_circle_1 = False
-show_cross_1 = False
 
-global show_circle_2, show_cross_2
-show_circle_2 = False
-show_cross_2 = False
+number_of_fields = 9
+field_numbers = {}
+initial_field_values = False
+for index in range(number_of_fields + 1):
+    circle_value = f"show_circle_{index}"
+    cross_value = f"show_cross_{index}"
+    field_numbers[circle_value] = initial_field_values
+    field_numbers[cross_value] = initial_field_values
 
-global show_circle_3, show_cross_3
-show_circle_3 = False
-show_cross_3 = False
-
-global show_circle_4, show_cross_4
-show_circle_4 = False
-show_cross_4 = False
-
-global show_circle_5, show_cross_5
-show_circle_5 = False
-show_cross_5 = False
-
-global show_circle_6, show_cross_6
-show_circle_6 = False
-show_cross_6 = False
-
-global show_circle_7, show_cross_7
-show_circle_7 = False
-show_cross_7 = False
-
-global show_circle_8, show_cross_8
-show_circle_8 = False
-show_cross_8 = False
-
-global show_circle_9, show_cross_9
-show_circle_9 = False
-show_cross_9 = False
-
-global turn_counter
 turn_counter = 0
 
 board = [
