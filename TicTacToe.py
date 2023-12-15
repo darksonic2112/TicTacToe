@@ -6,7 +6,8 @@ pygame.init()
 game_state = "Menu"
 player_turn = "Circle"
 
-FIELD_SIZE = 48
+FIELD_SIZE = 50
+line_width = 1
 
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 600
@@ -35,6 +36,7 @@ draw_text = font.render('Game is a draw', False, WHITE)
 win_delay = 1000
 turn_counter = 0
 
+field_rects = {}
 field_index = {}
 board = [
         [0, 0, 0],
@@ -113,15 +115,41 @@ def check_for_winner():
     return False
 
 
-def start_game():
-    global player_turn
-    global turn_counter
-    pygame.draw.line(window, WHITE, (100, 100), (100, 250), 5)
-    pygame.draw.line(window, WHITE, (150, 100), (150, 250), 5)
-    pygame.draw.line(window, WHITE, (50, 150), (200, 150), 5)
-    pygame.draw.line(window, WHITE, (50, 200), (200, 200), 5)
-    window.blit(text_surface, (WINDOW_WIDTH/2, 15))
+def draw_game_field():
+    global line_width
+    line_width = 5
+    pygame.draw.line(window, WHITE, (FIELD_SIZE * 2, FIELD_SIZE * 2),
+                     (FIELD_SIZE * 2, FIELD_SIZE * 5 + 5), line_width)
+    pygame.draw.line(window, WHITE, (FIELD_SIZE * 3 + 4, FIELD_SIZE * 2),
+                     (FIELD_SIZE * 3 + 4, FIELD_SIZE * 5 + 5), line_width)
+    pygame.draw.line(window, WHITE, (FIELD_SIZE, FIELD_SIZE * 3),
+                     (FIELD_SIZE * 4 + 5, FIELD_SIZE * 3), line_width)
+    pygame.draw.line(window, WHITE, (FIELD_SIZE, FIELD_SIZE * 4 + 4),
+                     (FIELD_SIZE * 4 + 5, FIELD_SIZE * 4 + 4), line_width)
+    window.blit(text_surface, (WINDOW_WIDTH / 2, 15))
 
+
+def draw_field_rects():
+    x = 50
+    y = 100
+    displace_x = 3
+    displace_y = 3
+    for field_number in range(1, 10):
+        field_rects["field_{0}_rect".format(str(field_number))] = pygame.Rect(x, y, FIELD_SIZE - 2, FIELD_SIZE - 2)
+        pygame.draw.rect(window, GREY, field_rects["field_{0}_rect".format(str(field_number))])
+        x += 50 + displace_x
+        displace_x += 2
+        if x >= 200:
+            x = 50
+            displace_x = 3
+            y += 50 + displace_y
+            displace_y += 2
+
+def start_game():
+    global player_turn, turn_counter
+
+    draw_field_rects()
+    draw_game_field()
     reset_button_surface = font.render(reset_button_text, True, WHITE)
     reset_text_rect = reset_button_surface.get_rect()
     reset_text_rect.center = reset_button_rect.center
@@ -141,13 +169,11 @@ def start_game():
     window.blit(reset_button_surface, reset_text_rect)
 
     #  Field 1
-    field_1_rect = pygame.Rect(50, 100, 48, 48)
-    pygame.draw.rect(window, GREY, field_1_rect)
     if not field_index["show_circle_1"] and not field_index["show_cross_1"]:
         if 50 <= mouse[0] <= 50 + FIELD_SIZE and 100 <= mouse[1] <= 100 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_1_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_1_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_1_rect.collidepoint(event.pos) and board[0][0] == 0:
+        if field_rects["field_1_rect"].collidepoint(event.pos) and board[0][0] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_1"] = True
                 player_turn = change_player(player_turn)
@@ -158,15 +184,12 @@ def start_game():
                 board[0][0] = 1
             turn_counter += 1
 
-
     #  Field 2
-    field_2_rect = pygame.Rect(103, 100, 45, 48)
-    pygame.draw.rect(window, GREY, field_2_rect)
     if not field_index["show_circle_2"] and not field_index["show_cross_2"]:
         if 103 <= mouse[0] <= 103 + 45 and 100 <= mouse[1] <= 100 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_2_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_2_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_2_rect.collidepoint(event.pos) and board[0][1] == 0:
+        if field_rects["field_2_rect"].collidepoint(event.pos) and board[0][1] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_2"] = True
                 player_turn = change_player(player_turn)
@@ -178,13 +201,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 3
-    field_3_rect = pygame.Rect(154, 100, 47, 48)
-    pygame.draw.rect(window, GREY, field_3_rect)
     if not field_index["show_circle_3"] and not field_index["show_cross_3"]:
         if 154 <= mouse[0] <= 154 + 45 and 100 <= mouse[1] <= 100 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_3_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_3_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_3_rect.collidepoint(event.pos) and board[0][2] == 0:
+        if field_rects["field_3_rect"].collidepoint(event.pos) and board[0][2] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_3"] = True
                 player_turn = change_player(player_turn)
@@ -196,13 +217,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 4
-    field_4_rect = pygame.Rect(50, 153, 48, 45)
-    pygame.draw.rect(window, GREY, field_4_rect)
     if not field_index["show_circle_4"] and not field_index["show_cross_4"]:
         if 50 <= mouse[0] <= 50 + 45 and 150 <= mouse[1] <= 150 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_4_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_4_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_4_rect.collidepoint(event.pos) and board[1][0] == 0:
+        if field_rects["field_4_rect"].collidepoint(event.pos) and board[1][0] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_4"] = True
                 player_turn = change_player(player_turn)
@@ -214,13 +233,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 5
-    field_5_rect = pygame.Rect(103, 153, 45, 45)
-    pygame.draw.rect(window, GREY, field_5_rect)
     if not field_index["show_circle_5"] and not field_index["show_cross_5"]:
         if 103 <= mouse[0] <= 103 + 45 and 150 <= mouse[1] <= 150 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_5_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_5_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_5_rect.collidepoint(event.pos) and board[1][1] == 0:
+        if field_rects["field_5_rect"].collidepoint(event.pos) and board[1][1] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_5"] = True
                 player_turn = change_player(player_turn)
@@ -232,13 +249,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 6
-    field_6_rect = pygame.Rect(154, 153, 47, 45)
-    pygame.draw.rect(window, GREY, field_6_rect)
     if not field_index["show_circle_6"] and not field_index["show_cross_6"]:
         if 154 <= mouse[0] <= 154 + 45 and 150 <= mouse[1] <= 150 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_6_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_6_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_6_rect.collidepoint(event.pos) and board[1][2] == 0:
+        if field_rects["field_6_rect"].collidepoint(event.pos) and board[1][2] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_6"] = True
                 player_turn = change_player(player_turn)
@@ -250,13 +265,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 7
-    field_7_rect = pygame.Rect(50, 203, 47, 48)
-    pygame.draw.rect(window, GREY, field_7_rect)
     if not field_index["show_circle_7"] and not field_index["show_cross_7"]:
         if 50 <= mouse[0] <= 50 + 45 and 200 <= mouse[1] <= 200 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_7_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_7_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_7_rect.collidepoint(event.pos) and board[2][0] == 0:
+        if field_rects["field_7_rect"].collidepoint(event.pos) and board[2][0] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_7"] = True
                 player_turn = change_player(player_turn)
@@ -268,13 +281,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 8
-    field_8_rect = pygame.Rect(103, 203, 45, 48)
-    pygame.draw.rect(window, GREY, field_8_rect)
     if not field_index["show_circle_8"] and not field_index["show_cross_8"]:
         if 100 <= mouse[0] <= 100 + 45 and 200 <= mouse[1] <= 200 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_8_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_8_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_8_rect.collidepoint(event.pos) and board[2][1] == 0:
+        if field_rects["field_8_rect"].collidepoint(event.pos) and board[2][1] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_8"] = True
                 player_turn = change_player(player_turn)
@@ -286,13 +297,11 @@ def start_game():
             turn_counter += 1
 
     #  Field 9
-    field_9_rect = pygame.Rect(154, 203, 47, 48)
-    pygame.draw.rect(window, GREY, field_9_rect)
     if not field_index["show_circle_9"] and not field_index["show_cross_9"]:
         if 150 <= mouse[0] <= 150 + 45 and 200 <= mouse[1] <= 200 + FIELD_SIZE:
-            pygame.draw.rect(window, LIGHT_GREY, field_9_rect)
+            pygame.draw.rect(window, LIGHT_GREY, field_rects["field_9_rect"])
     if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_9_rect.collidepoint(event.pos) and board[2][2] == 0:
+        if field_rects["field_9_rect"].collidepoint(event.pos) and board[2][2] == 0:
             if player_turn == "Circle":
                 field_index["show_circle_9"] = True
                 player_turn = change_player(player_turn)
