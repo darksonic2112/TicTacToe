@@ -33,16 +33,20 @@ winner_text = font.render('is the winner', False, white)
 draw_text = font.render('Game is a draw', False, white)
 
 win_delay = 1000
-
 turn_counter = 0
-
-field_index = {}
 
 board = [
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]
 ]
+
+field_index = {}
+
+for key in range(1, 10):
+    field_index["show_circle_{0}".format(str(key))] = False
+    field_index["show_cross_{0}".format(str(key))] = False
+print(field_index)
 
 
 def change_player(state):
@@ -58,38 +62,9 @@ player_turn = "Circle"
 def reset_game():
     pygame.display.flip()
     pygame.time.delay(win_delay)
-    global show_circle_1, show_cross_1, show_circle_2, show_cross_2, show_circle_3, show_cross_3, show_circle_4, \
-        show_cross_4, show_circle_5, show_cross_5, show_circle_6, show_cross_6, show_circle_7, show_cross_7, \
-        show_circle_8, show_cross_8, show_circle_9, show_cross_9
-
-    #for index in range(1, 10):
-        #print(index)
-    show_circle_1 = False
-    show_cross_1 = False
-
-    show_circle_2 = False
-    show_cross_2 = False
-
-    show_circle_3 = False
-    show_cross_3 = False
-
-    show_circle_4 = False
-    show_cross_4 = False
-
-    show_circle_5 = False
-    show_cross_5 = False
-
-    show_circle_6 = False
-    show_cross_6 = False
-
-    show_circle_7 = False
-    show_cross_7 = False
-
-    show_circle_8 = False
-    show_cross_8 = False
-
-    show_circle_9 = False
-    show_cross_9 = False
+    for key in range(1, 10):
+        field_index["show_circle_{0}".format(str(key))] = False
+        field_index["show_cross_{0}".format(str(key))] = False
 
     for i in range(3):
         for j in range(3):
@@ -186,173 +161,164 @@ def start_game():
     window.blit(reset_button_surface, reset_text_rect)
 
     #  Field 1
-    global show_circle_1, show_cross_1
     field_1_rect = pygame.Rect(50, 100, 48, 48)
     pygame.draw.rect(window, dark_grey, field_1_rect)
-    if not show_circle_1 and not show_cross_1:
+    if not field_index["show_circle_1"] and not field_index["show_cross_1"]:
         if 50 <= mouse[0] <= 50 + field_width and 100 <= mouse[1] <= 100 + field_height:
             pygame.draw.rect(window, light_grey, field_1_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_1_rect.collidepoint(event.pos) and board[0][0] == 0:
             if player_turn == "Circle":
-                show_circle_1 = True
+                field_index["show_circle_1"] = True
                 player_turn = change_player(player_turn)
                 board[0][0] = 2
             elif player_turn == "Cross":
-                show_cross_1 = True
+                field_index["show_cross_1"] = True
                 player_turn = change_player(player_turn)
                 board[0][0] = 1
             turn_counter += 1
 
 
     #  Field 2
-    global show_circle_2, show_cross_2
     field_2_rect = pygame.Rect(103, 100, 45, 48)
     pygame.draw.rect(window, dark_grey, field_2_rect)
-    if not show_circle_2 and not show_cross_2:
+    if not field_index["show_circle_2"] and not field_index["show_cross_2"]:
         if 103 <= mouse[0] <= 103 + 45 and 100 <= mouse[1] <= 100 + field_height:
             pygame.draw.rect(window, light_grey, field_2_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_2_rect.collidepoint(event.pos) and board[0][1] == 0:
             if player_turn == "Circle":
-                show_circle_2 = True
+                field_index["show_circle_2"] = True
                 player_turn = change_player(player_turn)
                 board[0][1] = 2
             elif player_turn == "Cross":
-                show_cross_2 = True
+                field_index["show_cross_2"] = True
                 player_turn = change_player(player_turn)
                 board[0][1] = 1
             turn_counter += 1
 
     #  Field 3
-    global show_circle_3, show_cross_3
     field_3_rect = pygame.Rect(154, 100, 47, 48)
     pygame.draw.rect(window, dark_grey, field_3_rect)
-    if not show_circle_3 and not show_cross_3:
+    if not field_index["show_circle_3"] and not field_index["show_cross_3"]:
         if 154 <= mouse[0] <= 154 + 45 and 100 <= mouse[1] <= 100 + field_height:
             pygame.draw.rect(window, light_grey, field_3_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_3_rect.collidepoint(event.pos) and board[0][2] == 0:
             if player_turn == "Circle":
-                show_circle_3 = True
+                field_index["show_circle_3"] = True
                 player_turn = change_player(player_turn)
                 board[0][2] = 2
             elif player_turn == "Cross":
-                show_cross_3 = True
+                field_index["show_cross_3"] = True
                 player_turn = change_player(player_turn)
                 board[0][2] = 1
             turn_counter += 1
 
     #  Field 4
-    global show_circle_4, show_cross_4
     field_4_rect = pygame.Rect(50, 153, 48, 45)
     pygame.draw.rect(window, dark_grey, field_4_rect)
-    if not show_circle_4 and not show_cross_4:
+    if not field_index["show_circle_4"] and not field_index["show_cross_4"]:
         if 50 <= mouse[0] <= 50 + 45 and 150 <= mouse[1] <= 150 + field_height:
             pygame.draw.rect(window, light_grey, field_4_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_4_rect.collidepoint(event.pos) and board[1][0] == 0:
             if player_turn == "Circle":
-                show_circle_4 = True
+                field_index["show_circle_4"] = True
                 player_turn = change_player(player_turn)
                 board[1][0] = 2
             elif player_turn == "Cross":
-                show_cross_4 = True
+                field_index["show_cross_4"] = True
                 player_turn = change_player(player_turn)
                 board[1][0] = 1
             turn_counter += 1
 
     #  Field 5
-    global show_circle_5, show_cross_5
     field_5_rect = pygame.Rect(103, 153, 45, 45)
     pygame.draw.rect(window, dark_grey, field_5_rect)
-    if not show_circle_5 and not show_cross_5:
+    if not field_index["show_circle_5"] and not field_index["show_cross_5"]:
         if 103 <= mouse[0] <= 103 + 45 and 150 <= mouse[1] <= 150 + field_height:
             pygame.draw.rect(window, light_grey, field_5_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_5_rect.collidepoint(event.pos) and board[1][1] == 0:
             if player_turn == "Circle":
-                show_circle_5 = True
+                field_index["show_circle_5"] = True
                 player_turn = change_player(player_turn)
                 board[1][1] = 2
             elif player_turn == "Cross":
-                show_cross_5 = True
+                field_index["show_cross_5"] = True
                 player_turn = change_player(player_turn)
                 board[1][1] = 1
             turn_counter += 1
 
     #  Field 6
-    global show_circle_6, show_cross_6
     field_6_rect = pygame.Rect(154, 153, 47, 45)
     pygame.draw.rect(window, dark_grey, field_6_rect)
-    if not show_circle_6 and not show_cross_6:
+    if not field_index["show_circle_6"] and not field_index["show_cross_6"]:
         if 154 <= mouse[0] <= 154 + 45 and 150 <= mouse[1] <= 150 + field_height:
             pygame.draw.rect(window, light_grey, field_6_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_6_rect.collidepoint(event.pos) and board[1][2] == 0:
             if player_turn == "Circle":
-                show_circle_6 = True
+                field_index["show_circle_6"] = True
                 player_turn = change_player(player_turn)
                 board[1][2] = 2
             elif player_turn == "Cross":
-                show_cross_6 = True
+                field_index["show_cross_6"] = True
                 player_turn = change_player(player_turn)
                 board[1][2] = 1
             turn_counter += 1
 
     #  Field 7
-    global show_circle_7, show_cross_7
     field_7_rect = pygame.Rect(50, 203, 47, 48)
     pygame.draw.rect(window, dark_grey, field_7_rect)
-    if not show_circle_7 and not show_cross_7:
+    if not field_index["show_circle_7"] and not field_index["show_cross_7"]:
         if 50 <= mouse[0] <= 50 + 45 and 200 <= mouse[1] <= 200 + field_height:
             pygame.draw.rect(window, light_grey, field_7_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_7_rect.collidepoint(event.pos) and board[2][0] == 0:
             if player_turn == "Circle":
-                show_circle_7 = True
+                field_index["show_circle_7"] = True
                 player_turn = change_player(player_turn)
                 board[2][0] = 2
             elif player_turn == "Cross":
-                show_cross_7 = True
+                field_index["show_cross_7"] = True
                 player_turn = change_player(player_turn)
                 board[2][0] = 1
             turn_counter += 1
 
     #  Field 8
-    global show_circle_8, show_cross_8
     field_8_rect = pygame.Rect(103, 203, 45, 48)
     pygame.draw.rect(window, dark_grey, field_8_rect)
-    if not show_circle_8 and not show_cross_8:
+    if not field_index["show_circle_8"] and not field_index["show_cross_8"]:
         if 100 <= mouse[0] <= 100 + 45 and 200 <= mouse[1] <= 200 + field_height:
             pygame.draw.rect(window, light_grey, field_8_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_8_rect.collidepoint(event.pos) and board[2][1] == 0:
             if player_turn == "Circle":
-                show_circle_8 = True
+                field_index["show_circle_8"] = True
                 player_turn = change_player(player_turn)
                 board[2][1] = 2
             elif player_turn == "Cross":
-                show_cross_8 = True
+                field_index["show_cross_8"] = True
                 player_turn = change_player(player_turn)
                 board[2][1] = 1
             turn_counter += 1
 
     #  Field 9
-    global show_circle_9, show_cross_9
     field_9_rect = pygame.Rect(154, 203, 47, 48)
     pygame.draw.rect(window, dark_grey, field_9_rect)
-    if not show_circle_9 and not show_cross_9:
+    if not field_index["show_circle_9"] and not field_index["show_cross_9"]:
         if 150 <= mouse[0] <= 150 + 45 and 200 <= mouse[1] <= 200 + field_height:
             pygame.draw.rect(window, light_grey, field_9_rect)
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_9_rect.collidepoint(event.pos) and board[2][2] == 0:
             if player_turn == "Circle":
-                show_circle_9 = True
+                field_index["show_circle_9"] = True
                 player_turn = change_player(player_turn)
                 board[2][2] = 2
             elif player_turn == "Cross":
-                show_cross_9 = True
+                field_index["show_cross_9"] = True
                 player_turn = change_player(player_turn)
                 board[2][2] = 1
             turn_counter += 1
@@ -422,51 +388,51 @@ while is_running:
             pygame.draw.circle(window, white, (window_width / 2 - 30, 30), 20, 5)
 
         #  Circles
-        if show_circle_1 and not show_cross_1:
+        if field_index["show_circle_1"] and not field_index["show_cross_1"]:
             pygame.draw.circle(window, white, (75, 125), 20, 5)
-        if show_circle_2 and not show_cross_2:
+        if field_index["show_circle_2"] and not field_index["show_cross_2"]:
             pygame.draw.circle(window, white, (125, 125), 20, 5)
-        if show_circle_3 and not show_cross_3:
+        if field_index["show_circle_3"] and not field_index["show_cross_3"]:
             pygame.draw.circle(window, white, (177, 125), 20, 5)
-        if show_circle_4 and not show_cross_4:
+        if field_index["show_circle_4"] and not field_index["show_cross_4"]:
             pygame.draw.circle(window, white, (75, 175), 20, 5)
-        if show_circle_5 and not show_cross_5:
+        if field_index["show_circle_5"] and not field_index["show_cross_5"]:
             pygame.draw.circle(window, white, (126, 175), 20, 5)
-        if show_circle_6 and not show_cross_6:
+        if field_index["show_circle_6"] and not field_index["show_cross_6"]:
             pygame.draw.circle(window, white, (177, 175), 20, 5)
-        if show_circle_7 and not show_cross_7:
+        if field_index["show_circle_7"] and not field_index["show_cross_7"]:
             pygame.draw.circle(window, white, (75, 225), 20, 5)
-        if show_circle_8 and not show_cross_8:
+        if field_index["show_circle_8"] and not field_index["show_cross_8"]:
             pygame.draw.circle(window, white, (125, 225), 20, 5)
-        if show_circle_9 and not show_cross_9:
+        if field_index["show_circle_9"] and not field_index["show_cross_9"]:
             pygame.draw.circle(window, white, (177, 225), 20, 5)
 
         #  Crosses
-        if show_cross_1 and not show_circle_1:
+        if field_index["show_cross_1"] and not field_index["show_circle_1"]:
             pygame.draw.line(window, white, (54, 103), (94, 143), 7)
             pygame.draw.line(window, white, (94, 103), (54, 143), 7)
-        if show_cross_2 and not show_circle_2:
+        if field_index["show_cross_2"] and not field_index["show_circle_2"]:
             pygame.draw.line(window, white, (105, 103), (145, 143), 7)
             pygame.draw.line(window, white, (145, 103), (105, 143), 7)
-        if show_cross_3 and not show_circle_3:
+        if field_index["show_cross_3"] and not field_index["show_circle_3"]:
             pygame.draw.line(window, white, (156, 103), (196, 143), 7)
             pygame.draw.line(window, white, (196, 103), (156, 143), 7)
-        if show_cross_4 and not show_circle_4:
+        if field_index["show_cross_4"] and not field_index["show_circle_4"]:
             pygame.draw.line(window, white, (54, 155), (94, 195), 7)
             pygame.draw.line(window, white, (94, 155), (54, 195), 7)
-        if show_cross_5 and not show_circle_5:
+        if field_index["show_cross_5"] and not field_index["show_circle_5"]:
             pygame.draw.line(window, white, (105, 155), (145, 195), 7)
             pygame.draw.line(window, white, (145, 155), (105, 195), 7)
-        if show_cross_6 and not show_circle_6:
+        if field_index["show_cross_6"] and not field_index["show_circle_6"]:
             pygame.draw.line(window, white, (156, 155), (196, 195), 7)
             pygame.draw.line(window, white, (195, 155), (156, 195), 7)
-        if show_cross_7 and not show_circle_7:
+        if field_index["show_cross_7"] and not field_index["show_circle_7"]:
             pygame.draw.line(window, white, (54, 208), (94, 248), 7)
             pygame.draw.line(window, white, (94, 208), (54, 248), 7)
-        if show_cross_8 and not show_circle_8:
+        if field_index["show_cross_8"] and not field_index["show_circle_8"]:
             pygame.draw.line(window, white, (105, 208), (145, 248), 7)
             pygame.draw.line(window, white, (145, 208), (105, 248), 7)
-        if show_cross_9 and not show_circle_9:
+        if field_index["show_cross_9"] and not field_index["show_circle_9"]:
             pygame.draw.line(window, white, (156, 208), (196, 248), 7)
             pygame.draw.line(window, white, (195, 208), (156, 248), 7)
 
