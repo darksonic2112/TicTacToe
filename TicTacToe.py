@@ -71,55 +71,41 @@ def reset_game():
 
 def check_for_winner():
     #  Check Rows
+    cross_won = False
+    circle_won = False
+
     for row in board:
         if all(cell == row[0] for cell in row) and row[0] == 1:
-            window.blit(winner_text, (WINDOW_WIDTH/2, WINDOW_HEIGHT/4))
-            pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT/4-10), (290, WINDOW_HEIGHT/4+30), 7)
-            pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT/4-10), (250, WINDOW_HEIGHT/4+30), 7)
-            reset_game()
-
-
-        if all(cell == row[0] for cell in row) and row[0] == 2:
-            window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-            pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
-            reset_game()
+            cross_won = True
+        elif all(cell == row[0] for cell in row) and row[0] == 2:
+            circle_won = True
 
     #  Check columns
     for col in range(3):
         if all(row[col] == board[0][col] for row in board) and board[0][col] == 1:
-            window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-            pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
-            pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
-            reset_game()
-
-        if all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
-            window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-            pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
-            reset_game()
+            cross_won = True
+        elif all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
+            circle_won = True
 
     #  Check diagonals
     if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 1:
+        cross_won = True
+    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
+        cross_won = True
+    elif all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
+        circle_won = True
+    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
+        circle_won = True
+
+    if cross_won:
         window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
         pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
         reset_game()
-
-    if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
+    if circle_won:
         window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
         reset_game()
-
-    if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
-        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-        pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
-        pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
-        reset_game()
-
-    if all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
-        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-        pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
-        reset_game()
-
     if turn_counter == 9:
         window.blit(draw_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         reset_game()
