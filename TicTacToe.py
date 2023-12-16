@@ -145,6 +145,7 @@ def draw_field_rects():
             y += 50 + displace_y
             displace_y += 2
 
+
 def start_game():
     global player_turn, turn_counter
 
