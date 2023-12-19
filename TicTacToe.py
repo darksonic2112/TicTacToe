@@ -39,10 +39,10 @@ turn_counter = 0
 field_rects = {}
 field_index = {}
 board = [
-        [0, 0, 0],
-        [0, 0, 0],
-        [0, 0, 0]
-    ]
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0, 0]
+]
 for key in range(1, 10):
     field_index["show_circle_{0}".format(str(key))] = False
     field_index["show_cross_{0}".format(str(key))] = False
@@ -71,7 +71,7 @@ def reset_game():
     turn_counter = 0
 
 
-def check_for_winner():
+def check_for_winner(draw=False):
     #  Check Rows
     cross_won = False
     circle_won = False
@@ -99,16 +99,26 @@ def check_for_winner():
     elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
         circle_won = True
 
+    if not draw:
+        draw = True
+        for row in board:
+            for element in row:
+                if element == 0:
+                    draw = False
+                    break
+            if not draw:
+                break
+
     if cross_won:
         window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
         pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
         reset_game()
-    if circle_won:
+    elif circle_won:
         window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
         reset_game()
-    if turn_counter == 9:
+    elif draw:
         window.blit(draw_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
         reset_game()
 
@@ -202,7 +212,6 @@ def start_game():
                 field_index["show_cross_1"] = True
                 player_turn = change_player(player_turn)
                 board[0][0] = 1
-            turn_counter += 1
 
     #  Field 2
     if not field_index["show_circle_2"] and not field_index["show_cross_2"]:
@@ -218,7 +227,6 @@ def start_game():
                 field_index["show_cross_2"] = True
                 player_turn = change_player(player_turn)
                 board[0][1] = 1
-            turn_counter += 1
 
     #  Field 3
     if not field_index["show_circle_3"] and not field_index["show_cross_3"]:
@@ -234,7 +242,6 @@ def start_game():
                 field_index["show_cross_3"] = True
                 player_turn = change_player(player_turn)
                 board[0][2] = 1
-            turn_counter += 1
 
     #  Field 4
     if not field_index["show_circle_4"] and not field_index["show_cross_4"]:
@@ -250,7 +257,6 @@ def start_game():
                 field_index["show_cross_4"] = True
                 player_turn = change_player(player_turn)
                 board[1][0] = 1
-            turn_counter += 1
 
     #  Field 5
     if not field_index["show_circle_5"] and not field_index["show_cross_5"]:
@@ -266,7 +272,6 @@ def start_game():
                 field_index["show_cross_5"] = True
                 player_turn = change_player(player_turn)
                 board[1][1] = 1
-            turn_counter += 1
 
     #  Field 6
     if not field_index["show_circle_6"] and not field_index["show_cross_6"]:
@@ -282,7 +287,6 @@ def start_game():
                 field_index["show_cross_6"] = True
                 player_turn = change_player(player_turn)
                 board[1][2] = 1
-            turn_counter += 1
 
     #  Field 7
     if not field_index["show_circle_7"] and not field_index["show_cross_7"]:
@@ -298,7 +302,6 @@ def start_game():
                 field_index["show_cross_7"] = True
                 player_turn = change_player(player_turn)
                 board[2][0] = 1
-            turn_counter += 1
 
     #  Field 8
     if not field_index["show_circle_8"] and not field_index["show_cross_8"]:
@@ -314,7 +317,6 @@ def start_game():
                 field_index["show_cross_8"] = True
                 player_turn = change_player(player_turn)
                 board[2][1] = 1
-            turn_counter += 1
 
     #  Field 9
     if not field_index["show_circle_9"] and not field_index["show_cross_9"]:
@@ -330,7 +332,6 @@ def start_game():
                 field_index["show_cross_9"] = True
                 player_turn = change_player(player_turn)
                 board[2][2] = 1
-            turn_counter += 1
 
 
 is_running = True
@@ -346,7 +347,7 @@ while is_running:
                 pygame.quit()
                 sys.exit()
             if reset_button_rect.collidepoint(event.pos):
-                turn_counter = 9
+                check_for_winner(True)
 
     window.fill(GREY)
 
@@ -372,14 +373,17 @@ while is_running:
 
         # if mouse is hovered on a button it changes to lighter shade
         # -100 is the offset from the button to window center
-        if (WINDOW_WIDTH/2-button_rect.width/2 <= mouse[0] <= WINDOW_WIDTH/2+button_rect.width/2 and
-                WINDOW_HEIGHT/2-button_rect.height/2-100 <= mouse[1] <= WINDOW_HEIGHT/2+button_rect.height/2-100):
+        if (WINDOW_WIDTH / 2 - button_rect.width / 2 <= mouse[0] <= WINDOW_WIDTH / 2 + button_rect.width / 2 and
+                WINDOW_HEIGHT / 2 - button_rect.height / 2 - 100 <= mouse[
+                    1] <= WINDOW_HEIGHT / 2 + button_rect.height / 2 - 100):
             pygame.draw.rect(window, LIGHT_GREY, button_rect)
         else:
             pygame.draw.rect(window, DARK_GREY, button_rect)
 
-        if (WINDOW_WIDTH/2-quit_button_rect.width/2 <= mouse[0] <= WINDOW_WIDTH/2+quit_button_rect.width/2 and
-                WINDOW_HEIGHT/2-quit_button_rect.height/2+100 <= mouse[1] <= WINDOW_HEIGHT/2+quit_button_rect.height/2+100):
+        if (WINDOW_WIDTH / 2 - quit_button_rect.width / 2 <= mouse[
+            0] <= WINDOW_WIDTH / 2 + quit_button_rect.width / 2 and
+                WINDOW_HEIGHT / 2 - quit_button_rect.height / 2 + 100 <= mouse[
+                    1] <= WINDOW_HEIGHT / 2 + quit_button_rect.height / 2 + 100):
             pygame.draw.rect(window, LIGHT_GREY, quit_button_rect)
         else:
             pygame.draw.rect(window, DARK_GREY, quit_button_rect)
