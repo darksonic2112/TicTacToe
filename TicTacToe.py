@@ -34,7 +34,6 @@ winner_text = font.render('is the winner', False, WHITE)
 draw_text = font.render('Game is a draw', False, WHITE)
 
 win_delay = 1000
-turn_counter = 0
 
 field_rects = {}
 field_index = {}
@@ -66,9 +65,6 @@ def reset_game():
     for i in range(3):
         for j in range(3):
             board[i][j] = 0
-
-    global turn_counter
-    turn_counter = 0
 
 
 def check_for_winner(draw=False):
@@ -156,6 +152,21 @@ def draw_field_rects():
             offset_y += 2
 
 
+def update_symbols():
+    global player_turn
+    mouse = pygame.mouse.get_pos()
+    if 50 < mouse[0] < 200 and 100 < mouse[1] < 250:
+        column = mouse[0] // FIELD_SIZE - 1
+        row = mouse[1] // FIELD_SIZE - 2
+        if event.type == pygame.MOUSEBUTTONDOWN and board[row][column] == 0:
+            if player_turn == "Circle":
+                player_turn = change_player(player_turn)
+                board[row][column] = 2
+            elif player_turn == "Cross":
+                player_turn = change_player(player_turn)
+                board[row][column] = 1
+
+
 def update_field():
     offset_x = 3
     offset_y = 3
@@ -185,7 +196,7 @@ def update_field():
 
 
 def start_game():
-    global player_turn, turn_counter
+    global player_turn
 
     draw_field_rects()
     draw_game_field()
@@ -207,95 +218,7 @@ def start_game():
 
     window.blit(reset_button_surface, reset_text_rect)
 
-    #  Field 1
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_1_rect"].collidepoint(event.pos) and board[0][0] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[0][0] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[0][0] = 1
 
-    #  Field 2
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_2_rect"].collidepoint(event.pos) and board[0][1] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[0][1] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[0][1] = 1
-
-    #  Field 3
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_3_rect"].collidepoint(event.pos) and board[0][2] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[0][2] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[0][2] = 1
-
-    #  Field 4
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_4_rect"].collidepoint(event.pos) and board[1][0] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[1][0] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[1][0] = 1
-
-    #  Field 5
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_5_rect"].collidepoint(event.pos) and board[1][1] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[1][1] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[1][1] = 1
-
-    #  Field 6
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_6_rect"].collidepoint(event.pos) and board[1][2] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[1][2] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[1][2] = 1
-
-    #  Field 7
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_7_rect"].collidepoint(event.pos) and board[2][0] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[2][0] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[2][0] = 1
-
-    #  Field 8
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_8_rect"].collidepoint(event.pos) and board[2][1] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[2][1] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[2][1] = 1
-
-    #  Field 9
-    if event.type == pygame.MOUSEBUTTONDOWN:
-        if field_rects["field_9_rect"].collidepoint(event.pos) and board[2][2] == 0:
-            if player_turn == "Circle":
-                player_turn = change_player(player_turn)
-                board[2][2] = 2
-            elif player_turn == "Cross":
-                player_turn = change_player(player_turn)
-                board[2][2] = 1
 
 
 is_running = True
@@ -364,7 +287,7 @@ while is_running:
             pygame.draw.line(window, WHITE, (290, 10), (250, 50), 7)
         if player_turn == "Circle":
             pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, 30), 20, 5)
-
+        update_symbols()
         update_field()
         check_for_winner()
 
