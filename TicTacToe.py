@@ -211,11 +211,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_1_rect"].collidepoint(event.pos) and board[0][0] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_1"] = True
                 player_turn = change_player(player_turn)
                 board[0][0] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_1"] = True
                 player_turn = change_player(player_turn)
                 board[0][0] = 1
 
@@ -223,11 +221,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_2_rect"].collidepoint(event.pos) and board[0][1] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_2"] = True
                 player_turn = change_player(player_turn)
                 board[0][1] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_2"] = True
                 player_turn = change_player(player_turn)
                 board[0][1] = 1
 
@@ -235,11 +231,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_3_rect"].collidepoint(event.pos) and board[0][2] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_3"] = True
                 player_turn = change_player(player_turn)
                 board[0][2] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_3"] = True
                 player_turn = change_player(player_turn)
                 board[0][2] = 1
 
@@ -247,11 +241,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_4_rect"].collidepoint(event.pos) and board[1][0] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_4"] = True
                 player_turn = change_player(player_turn)
                 board[1][0] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_4"] = True
                 player_turn = change_player(player_turn)
                 board[1][0] = 1
 
@@ -259,11 +251,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_5_rect"].collidepoint(event.pos) and board[1][1] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_5"] = True
                 player_turn = change_player(player_turn)
                 board[1][1] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_5"] = True
                 player_turn = change_player(player_turn)
                 board[1][1] = 1
 
@@ -271,11 +261,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_6_rect"].collidepoint(event.pos) and board[1][2] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_6"] = True
                 player_turn = change_player(player_turn)
                 board[1][2] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_6"] = True
                 player_turn = change_player(player_turn)
                 board[1][2] = 1
 
@@ -283,11 +271,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_7_rect"].collidepoint(event.pos) and board[2][0] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_7"] = True
                 player_turn = change_player(player_turn)
                 board[2][0] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_7"] = True
                 player_turn = change_player(player_turn)
                 board[2][0] = 1
 
@@ -295,11 +281,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_8_rect"].collidepoint(event.pos) and board[2][1] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_8"] = True
                 player_turn = change_player(player_turn)
                 board[2][1] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_8"] = True
                 player_turn = change_player(player_turn)
                 board[2][1] = 1
 
@@ -307,11 +291,9 @@ def start_game():
     if event.type == pygame.MOUSEBUTTONDOWN:
         if field_rects["field_9_rect"].collidepoint(event.pos) and board[2][2] == 0:
             if player_turn == "Circle":
-                field_index["show_circle_9"] = True
                 player_turn = change_player(player_turn)
                 board[2][2] = 2
             elif player_turn == "Cross":
-                field_index["show_cross_9"] = True
                 player_turn = change_player(player_turn)
                 board[2][2] = 1
 
