@@ -7,7 +7,7 @@ game_state = "Menu"
 player_turn = "Circle"
 
 FIELD_SIZE = 50
-line_width = 1
+line_width = 5
 
 WINDOW_WIDTH = 600
 WINDOW_HEIGHT = 600
@@ -36,15 +36,11 @@ draw_text = font.render('Game is a draw', False, WHITE)
 win_delay = 1000
 
 field_rects = {}
-field_index = {}
 board = [
     [0, 0, 0],
     [0, 0, 0],
     [0, 0, 0]
 ]
-for key in range(1, 10):
-    field_index["show_circle_{0}".format(str(key))] = False
-    field_index["show_cross_{0}".format(str(key))] = False
 
 
 def change_player(state):
@@ -57,10 +53,6 @@ def change_player(state):
 def reset_game():
     pygame.display.flip()
     pygame.time.delay(win_delay)
-
-    for key_reset in field_index:
-        field_index[key_reset] = False
-        field_index[key_reset] = False
 
     for i in range(3):
         for j in range(3):
@@ -122,8 +114,6 @@ def check_for_winner(draw=False):
 
 
 def draw_game_field():
-    global line_width
-    line_width = 5
     pygame.draw.line(window, WHITE, (FIELD_SIZE * 2, FIELD_SIZE * 2),
                      (FIELD_SIZE * 2, FIELD_SIZE * 5 + 5), line_width)
     pygame.draw.line(window, WHITE, (FIELD_SIZE * 3 + 4, FIELD_SIZE * 2),
@@ -154,10 +144,10 @@ def draw_field_rects():
 
 def update_symbols():
     global player_turn
-    mouse = pygame.mouse.get_pos()
-    if 50 < mouse[0] < 200 and 100 < mouse[1] < 250:
-        column = mouse[0] // FIELD_SIZE - 1
-        row = mouse[1] // FIELD_SIZE - 2
+    mouse_symbol_position = pygame.mouse.get_pos()
+    if 50 < mouse_symbol_position[0] < 200 and 100 < mouse_symbol_position[1] < 250:
+        column = mouse_symbol_position[0] // FIELD_SIZE - 1
+        row = mouse_symbol_position[1] // FIELD_SIZE - 2
         if event.type == pygame.MOUSEBUTTONDOWN and board[row][column] == 0:
             if player_turn == "Circle":
                 player_turn = change_player(player_turn)
@@ -170,7 +160,7 @@ def update_symbols():
 def update_field():
     offset_x = 3
     offset_y = 3
-    mouse = pygame.mouse.get_pos()
+    mouse_hover_position = pygame.mouse.get_pos()
     for column in range(0, 3):
         for row in range(0, 3):
             if board[column][row] == 1:
@@ -185,19 +175,17 @@ def update_field():
             elif board[column][row] == 2:
                 pygame.draw.circle(window, WHITE, (FIELD_SIZE * row + 75 + (offset_x * row),
                                                    FIELD_SIZE * column + 125 + (offset_y * column)), 20, 5)
-            elif ((FIELD_SIZE * row + 54 + (offset_x * row)) <= mouse[0] <= (FIELD_SIZE * row + 54 + (offset_x * row)) +
-                  FIELD_SIZE and (FIELD_SIZE * column + 103 + (offset_y * column)) <= mouse[1] <= (FIELD_SIZE * column +
-                                                                                                   103 + (
-                                offset_y * column)) + FIELD_SIZE):
-                highlight_button = pygame.Rect(FIELD_SIZE * row + 50 + (offset_x * row) + row,
-                                 FIELD_SIZE * column + 100 + (offset_y * column) + column,
-                                 FIELD_SIZE - 2, FIELD_SIZE - 2)
+            elif ((FIELD_SIZE * row + 54 + (offset_x * row)) <= mouse_hover_position[0] <= (FIELD_SIZE * row + 54 +
+                                                                                            (offset_x * row)) +
+                  FIELD_SIZE and (FIELD_SIZE * column + 103 + (offset_y * column)) <= mouse_hover_position[1] <=
+                  (FIELD_SIZE * column + 103 + (offset_y * column)) + FIELD_SIZE):
+                highlight_button = pygame.Rect(FIELD_SIZE * row + 50 + (offset_x * row) + row, FIELD_SIZE * column +
+                                               100 + (offset_y * column) + column, FIELD_SIZE - 2, FIELD_SIZE - 2)
                 pygame.draw.rect(window, LIGHT_GREY, highlight_button)
 
 
 def start_game():
     global player_turn
-
     draw_field_rects()
     draw_game_field()
     reset_button_surface = font.render(reset_button_text, True, WHITE)
@@ -217,8 +205,6 @@ def start_game():
         pygame.draw.rect(window, DARK_GREY, reset_button_rect)
 
     window.blit(reset_button_surface, reset_text_rect)
-
-
 
 
 is_running = True
