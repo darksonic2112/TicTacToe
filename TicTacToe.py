@@ -19,8 +19,8 @@ LIGHT_GREY = (52, 55, 58)
 GREY = (43, 45, 48)
 DARK_GREY = (23, 25, 28)
 
-button_text = "Play"
-button_rect = pygame.Rect(300, 250, 200, 100)
+play_button_text = "Play"
+play_button_rect = pygame.Rect(300, 250, 200, 100)
 
 quit_button_text = "Quit"
 quit_button_rect = pygame.Rect(300, 250, 200, 100)
@@ -43,74 +43,67 @@ board = [
 ]
 
 
-def change_player(state):
-    if state == "Circle":
-        return "Cross"
+def start_menu():
+    #  Play button
+    play_button_surface = font.render(play_button_text, True, WHITE)
+    play_text_rect = play_button_surface.get_rect()
+    play_text_rect.center = play_button_rect.center
+    pygame.draw.rect(window, DARK_GREY, play_button_rect)
+    play_button_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 100)
+
+    #  Quit button
+    quit_button_surface = font.render(quit_button_text, True, WHITE)
+    quit_text_rect = quit_button_surface.get_rect()
+    quit_text_rect.center = quit_button_rect.center
+    pygame.draw.rect(window, DARK_GREY, quit_button_rect)
+    quit_button_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 100)
+
+    mouse = pygame.mouse.get_pos()
+
+    # if mouse is hovered on a button it changes to lighter shade
+    # -100 is the offset from the button to window center
+    if (WINDOW_WIDTH / 2 - play_button_rect.width / 2 <= mouse[0] <= WINDOW_WIDTH / 2 + play_button_rect.width / 2 and
+            WINDOW_HEIGHT / 2 - play_button_rect.height / 2 - 100 <= mouse[
+                1] <= WINDOW_HEIGHT / 2 + play_button_rect.height / 2 - 100):
+        pygame.draw.rect(window, LIGHT_GREY, play_button_rect)
     else:
-        return "Circle"
+        pygame.draw.rect(window, DARK_GREY, play_button_rect)
+
+    if (WINDOW_WIDTH / 2 - quit_button_rect.width / 2 <= mouse[
+        0] <= WINDOW_WIDTH / 2 + quit_button_rect.width / 2 and
+            WINDOW_HEIGHT / 2 - quit_button_rect.height / 2 + 100 <= mouse[
+                1] <= WINDOW_HEIGHT / 2 + quit_button_rect.height / 2 + 100):
+        pygame.draw.rect(window, LIGHT_GREY, quit_button_rect)
+    else:
+        pygame.draw.rect(window, DARK_GREY, quit_button_rect)
+
+    window.blit(play_button_surface, play_text_rect)
+    window.blit(quit_button_surface, quit_text_rect)
 
 
-def reset_game():
-    pygame.display.flip()
-    pygame.time.delay(win_delay)
+def start_game():
+    global player_turn
+    draw_field_rects()
+    draw_game_field()
 
-    for i in range(3):
-        for j in range(3):
-            board[i][j] = 0
+    #  Reset button
+    reset_button_surface = font.render(reset_button_text, True, WHITE)
+    reset_text_rect = reset_button_surface.get_rect()
+    reset_text_rect.center = reset_button_rect.center
+    pygame.draw.rect(window, DARK_GREY, reset_button_rect)
+    reset_button_rect.center = (WINDOW_WIDTH // 2 + 150, WINDOW_HEIGHT // 2 - 50)
 
+    mouse = pygame.mouse.get_pos()
 
-def check_for_winner(draw=False):
-    #  Check Rows
-    cross_won = False
-    circle_won = False
+    if (WINDOW_WIDTH / 2 + 150 - reset_button_rect.width / 2 <= mouse[0] <= WINDOW_WIDTH / 2 +
+            reset_button_rect.width / 2 + 150 and
+            WINDOW_HEIGHT / 2 - reset_button_rect.height / 2 - 50 <= mouse[
+                1] <= WINDOW_HEIGHT / 2 + reset_button_rect.height / 2 - 50):
+        pygame.draw.rect(window, LIGHT_GREY, reset_button_rect)
+    else:
+        pygame.draw.rect(window, DARK_GREY, reset_button_rect)
 
-    for row in board:
-        if all(cell == row[0] for cell in row) and row[0] == 1:
-            cross_won = True
-        elif all(cell == row[0] for cell in row) and row[0] == 2:
-            circle_won = True
-
-    #  Check columns
-    for col in range(3):
-        if all(row[col] == board[0][col] for row in board) and board[0][col] == 1:
-            cross_won = True
-        elif all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
-            circle_won = True
-
-    #  Check diagonals
-    if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 1:
-        cross_won = True
-    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
-        cross_won = True
-    elif all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
-        circle_won = True
-    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
-        circle_won = True
-
-    if not draw:
-        draw = True
-        for row in board:
-            for element in row:
-                if element == 0:
-                    draw = False
-                    break
-            if not draw:
-                break
-
-    if cross_won:
-        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-        pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
-        pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
-        reset_game()
-    elif circle_won:
-        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-        pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
-        reset_game()
-    elif draw:
-        window.blit(draw_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
-        reset_game()
-
-    return False
+    window.blit(reset_button_surface, reset_text_rect)
 
 
 def draw_game_field():
@@ -184,27 +177,74 @@ def update_field():
                 pygame.draw.rect(window, LIGHT_GREY, highlight_button)
 
 
-def start_game():
-    global player_turn
-    draw_field_rects()
-    draw_game_field()
-    reset_button_surface = font.render(reset_button_text, True, WHITE)
-    reset_text_rect = reset_button_surface.get_rect()
-    reset_text_rect.center = reset_button_rect.center
-    pygame.draw.rect(window, DARK_GREY, reset_button_rect)
-    reset_button_rect.center = (WINDOW_WIDTH // 2 + 150, WINDOW_HEIGHT // 2 - 50)
-
-    mouse = pygame.mouse.get_pos()
-
-    if (WINDOW_WIDTH / 2 + 150 - reset_button_rect.width / 2 <= mouse[0] <= WINDOW_WIDTH / 2 +
-            reset_button_rect.width / 2 + 150 and
-            WINDOW_HEIGHT / 2 - reset_button_rect.height / 2 - 50 <= mouse[
-                1] <= WINDOW_HEIGHT / 2 + reset_button_rect.height / 2 - 50):
-        pygame.draw.rect(window, LIGHT_GREY, reset_button_rect)
+def change_player(state):
+    if state == "Circle":
+        return "Cross"
     else:
-        pygame.draw.rect(window, DARK_GREY, reset_button_rect)
+        return "Circle"
 
-    window.blit(reset_button_surface, reset_text_rect)
+
+def check_for_winner(draw=False):
+    #  Check Rows
+    cross_won = False
+    circle_won = False
+
+    for row in board:
+        if all(cell == row[0] for cell in row) and row[0] == 1:
+            cross_won = True
+        elif all(cell == row[0] for cell in row) and row[0] == 2:
+            circle_won = True
+
+    #  Check columns
+    for col in range(3):
+        if all(row[col] == board[0][col] for row in board) and board[0][col] == 1:
+            cross_won = True
+        elif all(row[col] == board[0][col] for row in board) and board[0][col] == 2:
+            circle_won = True
+
+    #  Check diagonals
+    if all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 1:
+        cross_won = True
+    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 1:
+        cross_won = True
+    elif all(board[i][i] == board[0][0] for i in range(3)) and board[0][0] == 2:
+        circle_won = True
+    elif all(board[i][2 - i] == board[0][2] for i in range(3)) and board[0][2] == 2:
+        circle_won = True
+
+    if not draw:
+        draw = True
+        for row in board:
+            for element in row:
+                if element == 0:
+                    draw = False
+                    break
+            if not draw:
+                break
+
+    if cross_won:
+        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
+        pygame.draw.line(window, WHITE, (250, WINDOW_HEIGHT / 4 - 10), (290, WINDOW_HEIGHT / 4 + 30), 7)
+        pygame.draw.line(window, WHITE, (290, WINDOW_HEIGHT / 4 - 10), (250, WINDOW_HEIGHT / 4 + 30), 7)
+        reset_game()
+    elif circle_won:
+        window.blit(winner_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
+        pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, WINDOW_HEIGHT / 4 + 10), 20, 5)
+        reset_game()
+    elif draw:
+        window.blit(draw_text, (WINDOW_WIDTH / 2, WINDOW_HEIGHT / 4))
+        reset_game()
+
+    return False
+
+
+def reset_game():
+    pygame.display.flip()
+    pygame.time.delay(win_delay)
+
+    for i in range(3):
+        for j in range(3):
+            board[i][j] = 0
 
 
 is_running = True
@@ -214,56 +254,18 @@ while is_running:
             is_running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if button_rect.collidepoint(event.pos):
+            if play_button_rect.collidepoint(event.pos):
                 game_state = "Game"
             if quit_button_rect.collidepoint(event.pos):
                 pygame.quit()
                 sys.exit()
-            if reset_button_rect.collidepoint(event.pos):
+            if reset_button_rect.collidepoint(event.pos) and game_state == "Game":
                 check_for_winner(True)
 
     window.fill(GREY)
 
     if game_state == "Menu":
-
-        button_surface = font.render(button_text, True, WHITE)
-        quit_button_surface = font.render(quit_button_text, True, WHITE)
-
-        text_rect = button_surface.get_rect()
-        text_rect.center = button_rect.center
-
-        quit_text_rect = quit_button_surface.get_rect()
-        quit_text_rect.center = quit_button_rect.center
-
-        window.fill(GREY)
-        pygame.draw.rect(window, DARK_GREY, button_rect)
-        pygame.draw.rect(window, DARK_GREY, quit_button_rect)
-
-        button_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 - 100)
-        quit_button_rect.center = (WINDOW_WIDTH // 2, WINDOW_HEIGHT // 2 + 100)
-
-        mouse = pygame.mouse.get_pos()
-
-        # if mouse is hovered on a button it changes to lighter shade
-        # -100 is the offset from the button to window center
-        if (WINDOW_WIDTH / 2 - button_rect.width / 2 <= mouse[0] <= WINDOW_WIDTH / 2 + button_rect.width / 2 and
-                WINDOW_HEIGHT / 2 - button_rect.height / 2 - 100 <= mouse[
-                    1] <= WINDOW_HEIGHT / 2 + button_rect.height / 2 - 100):
-            pygame.draw.rect(window, LIGHT_GREY, button_rect)
-        else:
-            pygame.draw.rect(window, DARK_GREY, button_rect)
-
-        if (WINDOW_WIDTH / 2 - quit_button_rect.width / 2 <= mouse[
-            0] <= WINDOW_WIDTH / 2 + quit_button_rect.width / 2 and
-                WINDOW_HEIGHT / 2 - quit_button_rect.height / 2 + 100 <= mouse[
-                    1] <= WINDOW_HEIGHT / 2 + quit_button_rect.height / 2 + 100):
-            pygame.draw.rect(window, LIGHT_GREY, quit_button_rect)
-        else:
-            pygame.draw.rect(window, DARK_GREY, quit_button_rect)
-
-        window.blit(button_surface, text_rect)
-        window.blit(quit_button_surface, quit_text_rect)
-
+        start_menu()
     elif game_state == "Game":
         start_game()
 
@@ -273,6 +275,7 @@ while is_running:
             pygame.draw.line(window, WHITE, (290, 10), (250, 50), 7)
         if player_turn == "Circle":
             pygame.draw.circle(window, WHITE, (WINDOW_WIDTH / 2 - 30, 30), 20, 5)
+
         update_symbols()
         update_field()
         check_for_winner()
