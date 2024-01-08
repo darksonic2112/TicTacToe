@@ -4,7 +4,7 @@ import sys
 pygame.init()
 
 game_state = "Menu"
-player_turn = "Circle"
+player_turn = "Cross"
 
 FIELD_SIZE = 50
 line_width = 5
