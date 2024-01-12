@@ -184,6 +184,15 @@ def change_player(state):
         return "Circle"
 
 
+def reset_game():
+    pygame.display.flip()
+    pygame.time.delay(win_delay)
+
+    for i in range(3):
+        for j in range(3):
+            board[i][j] = 0
+
+
 def check_for_winner(draw=False):
     #  Check Rows
     cross_won = False
@@ -238,15 +247,6 @@ def check_for_winner(draw=False):
     return False
 
 
-def reset_game():
-    pygame.display.flip()
-    pygame.time.delay(win_delay)
-
-    for i in range(3):
-        for j in range(3):
-            board[i][j] = 0
-
-
 is_running = True
 while is_running:
     for event in pygame.event.get():
@@ -281,5 +281,4 @@ while is_running:
         check_for_winner()
 
     pygame.display.flip()
-
 pygame.quit()
